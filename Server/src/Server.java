@@ -33,8 +33,11 @@ public class Server {
 		
 			//protocol
 			String msg = input.readUTF();
-			System.out.println("recebeu msg");
+			System.out.println("mensagem recebida " + msg);
 			output.writeUTF("Hello World!");
+			System.out.println("mensagem envidada " + "Hello World");
+
+			output.flush();
 			
 			output.close();
 			input.close();
