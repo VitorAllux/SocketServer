@@ -1,36 +1,38 @@
+package Cliente;
+
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class Cliente {
-	//frame
+public class Client {
+	// frame
 	private JFrame frame = new JFrame();
 	JTextArea panelChat = new JTextArea();
 	JTextField sendTxt = new JTextField();
 	JButton brnSair = new JButton("Sair");
 	JButton btnEnviar = new JButton("Enviar");
-	
-	public Cliente() {
+	// communication
+	private static Socket socket;
+
+	public Client() {
 		initialize();
 	}
-	
+
 	private void initialize() {
-		
-		//frame
+
+		// frame
 
 		frame.setTitle("Aircraft Controller!");
 		frame.getContentPane().setFont(new Font("Arial", Font.PLAIN, 12));
@@ -40,8 +42,8 @@ public class Cliente {
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
-		
-		//jtextpane
+
+		// jtextpane
 
 		panelChat.setLayout(null);
 		JScrollPane scrollBarChat = new JScrollPane(panelChat);
@@ -49,23 +51,22 @@ public class Cliente {
 		scrollBarChat.setBackground(Color.WHITE);
 		scrollBarChat.setBounds(10, 10, 365, 400);
 		frame.getContentPane().add(scrollBarChat);
-		
-		//textfield
+
+		// textfield
 
 		sendTxt.setLayout(null);
-		sendTxt.setBorder(new LineBorder(new Color(0,0,0),2));
+		sendTxt.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		sendTxt.setBounds(10, 430, 365, 30);
 		sendTxt.setHorizontalAlignment(sendTxt.CENTER);
 		frame.getContentPane().add(sendTxt);
-		
-		//buttons
+
+		// buttons
 
 		btnEnviar.setForeground(Color.BLACK);
 		btnEnviar.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnEnviar.setBackground(Color.ORANGE);
 		btnEnviar.setBounds(100, 480, 90, 40);
 		frame.getContentPane().add(btnEnviar);
-		
 
 		brnSair.setForeground(Color.BLACK);
 		brnSair.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -73,59 +74,47 @@ public class Cliente {
 		brnSair.setBounds(200, 480, 90, 40);
 		frame.getContentPane().add(brnSair);
 	}
-	
-	//comunication
-	private Socket socket;
-	private static ObjectOutputStream output;
-	private static ObjectInputStream input;
-	
+
+	// connection
 	private void connectServer() throws UnknownHostException, IOException {
 		socket = new Socket("localhost", 55555);
 		System.out.println("conectado server");
 		panelChat.append("Connectado ao servidor!\n");
 	}
-	
-	private void createStreams() throws IOException {
-		output = new ObjectOutputStream(socket.getOutputStream());
-		input = new ObjectInputStream(socket.getInputStream());
-		System.out.println("streams cridadas");
-	
-	}
-	
-	private void closeStreams() throws IOException {
-		output.close();
-		input.close();
-		socket.close();
-		panelChat.append("Conexão com o servidor encerrada!\n");
-	}
-	
+
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Cria o socket
+		// TODO Auto-generated method stub;
+		Client client = new Client();
+		client.frame.setVisible(true);
 		try {
-			Cliente cliente = new Cliente();
-			cliente.connectServer();
-			cliente.createStreams();
-			cliente.frame.setVisible(true);
-			
-			//fala com o servidor
-			output.writeUTF("hello!");
-			System.out.println("mensagem enviada Hello!");
-			output.flush();
-			System.out.println("Mensagem recebida " + input.readUTF());
-			output.writeUTF("sair");
-			
-			cliente.closeStreams();
-			
-		} catch (UnknownHostException e) {
+			client.connectServer();
+
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			Scanner scan = new Scanner(System.in);
+
+			while (true) {
+				System.out.println("digite sua mensagem");
+				String msg = scan.nextLine();
+				out.writeObject(msg);
+				out.flush();
+				try {
+					msg = in.readObject().toString();
+					System.out.println("MSG servidor - " + msg);
+
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		} catch (UnknownHostException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 	}
-	
-	
 
 }
