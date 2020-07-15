@@ -1,4 +1,4 @@
-
+package Controlador;
 public class Tradutor {
 	private Dicionario dicionario;
 	

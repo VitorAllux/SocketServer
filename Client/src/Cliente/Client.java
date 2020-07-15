@@ -85,7 +85,6 @@ public class Client {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub;
 		Client client = new Client();
-		client.frame.setVisible(true);
 		try {
 			client.connectServer();
 

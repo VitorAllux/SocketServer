@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
+import Controlador.Dicionario;
+import Controlador.Tradutor;
+
 public class Server {
 
 	private ServerSocket serverSocket;

@@ -17,6 +17,8 @@ public class Controller extends Thread {
 	@Override
 	public void run() {
 		try {
+			Dicionario d = new Dicionario();
+			Tradutor t = new Tradutor(d);
 			out = new ObjectOutputStream(client.getOutputStream());
 			in = new ObjectInputStream(client.getInputStream());
 			Scanner scan = new Scanner(System.in);
@@ -24,7 +26,8 @@ public class Controller extends Thread {
 				String msg = in.readObject().toString();
 				System.out.println("Cliente MSG - " + msg);
 				System.out.println("digite sua mensagem");
-				msg = "padrão";//scan.nextLine();
+				msg = t.traduzirParaPortugues(msg);
+				//msg = "padrão";//scan.nextLine();
 				out.writeObject(msg);
 				out.flush();
 			}
