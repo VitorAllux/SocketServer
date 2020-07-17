@@ -1,4 +1,4 @@
-package Controlador;
+package Tradutor;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +22,20 @@ public class Dicionario {
 			if (p.getPt().equals(palavra) || p.getEn().equals(palavra)) {
 				return p;
 			}
-
 		}
 		return null;
+	}
+	
+	public int cheackLen(String palavra) {
+		for(Palavra p : palavras) {
+			if(p.getPt().equals(palavra)) {
+				return 1;
+			}
+			else if(p.getEn().equals(palavra)) {
+				return 2;
+			}
+		}
+		return 0;
 	}
 
 	public Set<Palavra> getPalavras() {

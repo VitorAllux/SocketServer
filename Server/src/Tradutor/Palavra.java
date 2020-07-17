@@ -1,4 +1,4 @@
-package Controlador;
+package Tradutor;
 
 public class Palavra {
 	//linguas

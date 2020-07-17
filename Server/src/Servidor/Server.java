@@ -30,7 +30,7 @@ public class Server {
 		// TODO Auto-generated method stub
 		Server server = new Server();
 		try {
-			server.createServerSocket(55555);
+			server.createServerSocket(63213);
 			while(true) {
 				Socket client = server.waitConnectionSocket();
 				Controller ctr = new Controller(client);

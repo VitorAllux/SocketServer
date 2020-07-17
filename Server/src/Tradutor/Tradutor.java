@@ -1,4 +1,4 @@
-package Controlador;
+package Tradutor;
 public class Tradutor {
 	private Dicionario dicionario;
 	
@@ -29,6 +29,20 @@ public class Tradutor {
 			return p.getPt(); 
 		} 
 		
+		return "Tradução não encontrada!";
+	}
+	
+	public String traduzir(String palavra) {
+		Palavra p = dicionario.check(palavra);
+		if(p != null) {
+			int len = dicionario.cheackLen(palavra);
+			if(len == 1) {
+				return p.getEn();
+			}
+			else if(len == 2) {
+				return p.getPt();
+			}
+		}
 		return "Tradução não encontrada!";
 	}
 }
