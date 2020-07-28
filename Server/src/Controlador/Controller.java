@@ -25,11 +25,11 @@ public class Controller extends Thread {
 			Tradutor t = new Tradutor(d);
 			out = new ObjectOutputStream(client.getOutputStream());
 			in = new ObjectInputStream(client.getInputStream());
-			Scanner scan = new Scanner(System.in);
+			String msgEntrada;
 			while (true) {
-				String msgEntrada = in.readObject().toString();
+				msgEntrada = in.readObject().toString();
 				System.out.println("Mensagem do cliente: " + msgEntrada);
-				String msgRetorno = t.traduzir(msgEntrada);// traduz
+				String msgRetorno = t.traduzir(msgEntrada); // traduz
 				if (msgRetorno.equals("Tradução não encontrada!")) {
 					System.out.println("Tradução não encontrada para a palavra " + msgEntrada);
 					out.writeObject(msgRetorno);
@@ -44,6 +44,7 @@ public class Controller extends Thread {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+
 	}
 
 }
